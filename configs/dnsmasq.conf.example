@@ -1,0 +1,78 @@
+# ============================================================
+# Dnsmasq Configuration for Pi-hole
+# ============================================================
+
+# INTERFACE AND NETWORK
+interface=eth0
+listen-address=127.0.0.1
+listen-address=192.168.1.10
+bind-interfaces
+port=53
+
+# DHCP CONFIGURATION
+dhcp-range=192.168.1.100,192.168.1.254,12h
+dhcp-option=option:router,192.168.1.1
+dhcp-option=option:dns-server,192.168.1.10,8.8.8.8
+dhcp-leasefile=/var/lib/dnsmasq/dnsmasq.leases
+dhcp-authoritative
+
+# DNS SETTINGS
+cache-size=10000
+neg-ttl=3600
+local-ttl=600
+max-ttl=3600
+min-ttl=0
+
+# UPSTREAM DNS SERVERS (Encrypted)
+server=1.1.1.1
+server=1.0.0.1
+server=/google.com/8.8.8.8
+
+# BLOCK LISTS - ADS
+addn-hosts=/etc/dnsmasq.d/blocklists/ads.txt
+
+# BLOCK LISTS - TRACKERS
+addn-hosts=/etc/dnsmasq.d/blocklists/trackers.txt
+
+# BLOCK LISTS - MALWARE
+addn-hosts=/etc/dnsmasq.d/blocklists/malware.txt
+
+# BLOCK LISTS - PHISHING
+addn-hosts=/etc/dnsmasq.d/blocklists/phishing.txt
+
+# BLOCK LISTS - PUP (Potentially Unwanted Programs)
+addn-hosts=/etc/dnsmasq.d/blocklists/pup.txt
+
+# WHITELIST - ALLOWED DOMAINS
+# These domains bypass blocklists
+address=/facebook.com/0.0.0.0  # Example: Allow Facebook if needed
+
+# LOCAL DNS RECORDS
+address=/home-router.local/192.168.1.1
+address=/pihole.local/192.168.1.10
+address=/firewall.local/192.168.1.11
+address=/nas.local/192.168.1.20
+
+# LOGGING
+log-queries=extra
+log-facility=/var/log/dnsmasq/queries.log
+log-facility=/var/log/dnsmasq/errors.log
+quietdhcp
+
+# PERFORMANCE
+threads=4
+max-cache-ttl=3600
+min-cache-ttl=300
+cache-sync
+
+# SECURITY
+strictorder
+priv-objects
+deny-action=refuse
+
+# DNSSEC VALIDATION
+conf-file=/etc/dnsmasq.d/dnssec.conf
+trust-anchor=.,20326,8,2,E06D44B80B8F1B78......
+
+# CONDITIONAL FORWARDING
+revserver=1.168.192.in-addr.arpa,192.168.1.1

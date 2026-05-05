@@ -1,0 +1,160 @@
+# ============================================================
+# Firewall Automation Suite - Router Configuration
+# ============================================================
+
+# NETWORK CONFIGURATION
+[network]
+home_network = 192.168.1.0/24
+router_ip = 192.168.1.1
+router_hostname = home-router
+wan_interface = eth0
+lan_interface = eth1
+gateway_ip = 192.168.1.1
+dns_primary = 192.168.1.10
+dns_secondary = 8.8.8.8
+dhcp_start = 192.168.1.100
+dhcp_end = 192.168.1.254
+dhcp_lease_time = 86400
+
+# WIRELESS CONFIGURATION
+[wifi]
+ssid = HomeNetwork
+ssid_5ghz = HomeNetwork-5G
+ssid_hidden = false
+wifi_standard = WPA3
+wifi_standard_fallback = WPA2
+encryption_type = AES
+passphrase_length = 16
+passphrase = GenerateSecurePassphrase
+channel_2ghz = auto
+channel_5ghz = auto
+broadcast_country = US
+tx_power = 100
+
+# SECURITY SETTINGS
+[security]
+wps_enabled = false
+upnp_enabled = false
+remote_management = false
+ssh_enabled = true
+ssh_port = 22
+ssh_key_auth_only = true
+ssh_password_auth = false
+http_enabled = false
+https_enabled = true
+https_port = 443
+ssl_certificate = /etc/certs/router.crt
+ssl_key = /etc/certs/router.key
+
+# MAC FILTERING
+[mac_filter]
+mac_filtering_enabled = true
+mac_whitelist_only = false
+mac_whitelist = \
+    AA:BB:CC:DD:EE:01 Desktop-PC \
+    AA:BB:CC:DD:EE:02 Laptop \
+    AA:BB:CC:DD:EE:03 Smartphone \
+    AA:BB:CC:DD:EE:04 Tablet
+mac_blacklist = \
+    FF:FF:FF:FF:FF:FF Unknown-Device
+
+# FIREWALL RULES
+[firewall]
+default_policy_inbound = DROP
+default_policy_outbound = ALLOW
+default_policy_forward = DROP
+state_tracking = true
+syn_flood_protection = true
+port_scanning_detection = true
+
+# ALLOWED INBOUND PORTS
+allow_inbound_ports = \
+    22/tcp SSH \
+    443/tcp HTTPS \
+    53/udp DNS \
+    67/udp DHCP
+
+# BLOCKED OUTBOUND PORTS
+block_outbound_ports = \
+    23/tcp Telnet \
+    139/tcp SMB \
+    445/tcp SMB \
+    3389/tcp RDP
+
+# FIRMWARE SETTINGS
+[firmware]
+auto_update_enabled = true
+auto_update_schedule = 2:00 AM
+auto_update_day = Sunday
+firmware_check_interval = 86400
+firmware_beta_enabled = false
+firmware_rollback_enabled = true
+firmware_notify_admin = true
+
+# LOGGING AND MONITORING
+[logging]
+logging_enabled = true
+log_level = info
+log_file = /var/log/router.log
+log_rotation_size = 10M
+log_retention_days = 30
+flow_logging = true
+packet_logging = false
+connection_tracking = true
+connection_log_file = /var/log/connections.log
+
+# DEVICE MONITORING
+[device_monitor]
+device_monitor_enabled = true
+device_monitor_interval = 60
+device_monitor_log = /var/log/devices.log
+unknown_device_alert = true
+device_bandwidth_threshold = 1000Mbps
+device_connection_limit = 50
+device_fingerprinting = true
+
+# NOTIFICATIONS
+[notifications]
+email_alerts = true
+email_smtp_server = smtp.gmail.com
+email_smtp_port = 587
+email_from = admin@example.com
+email_to = user@example.com
+email_on_firmware_update = true
+email_on_new_device = true
+email_on_security_event = true
+
+telegram_alerts = true
+telegram_bot_token = YOUR_BOT_TOKEN
+telegram_chat_id = YOUR_CHAT_ID
+
+# ADVANCED SETTINGS
+[advanced]
+qos_enabled = false
+qos_algorithm = htb
+bandwidth_limit_enabled = false
+bandwidth_limit_mbps = 1000
+traffic_shaping_enabled = true
+traffic_shaping_rules = /etc/router/qos-rules.conf
+vpn_passthrough = true
+ipv6_enabled = false
+multiple_ssid = true
+guest_network = true
+guest_network_ssid = Guest-Network
+guest_network_isolated = true
+
+# CREDENTIALS (Should be in .env file in production)
+[credentials]
+admin_username = admin
+admin_password_hash = $2y$10$...hashed_password...
+
+# BACKUP AND RESTORE
+[backup]
+backup_enabled = true
+backup_schedule = 3:00 AM
+backup_day = Sunday
+backup_location = /backups/
+backup_retention_days = 30
+backup_encryption = true
+backup_cloud_enabled = false
+backup_cloud_service = aws_s3

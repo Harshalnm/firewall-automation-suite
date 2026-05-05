@@ -1,0 +1,56 @@
+# Configuration secrets
+configs/*.conf
+!configs/*.conf.example
+configs/*.key
+configs/*.pem
+configs/.env
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Runtime files
+*.pid
+*.sock
+*.tmp
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+venv/
+env/
+.pytest_cache/
+
+# Backups
+backups/
+*.backup
+*.bak
+
+# Data
+data/
+*.db
+*.sqlite
+
+# Sensitive
+secrets/
+*.secret
+*.token
+*.apikey
+passwords.txt
